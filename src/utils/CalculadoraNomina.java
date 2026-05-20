@@ -1,49 +1,48 @@
 package utils;
 
 /**
- * Clase de utilidad encargada de procesar las deducciones obligatorias
- * y validar la integridad del salario neto de cualquier empleado.
+ * Clase de utilidad encargada de centralizar las deducciones obligatorias,
+ * las constantes institucionales y las validaciones globales de nómina.
  */
 public class CalculadoraNomina {
 
-    // Constantes basadas en las Reglas de Negocio
-    public static final double PORCENTAJE_SALUD = 0.04;    // 4% del salario bruto
-    public static final double PORCENTAJE_PENSION = 0.04;  // 4% del salario bruto
-    public static final double PORCENTAJE_ARL = 0.00522;   // Ejemplo: Riesgo 1 (0.522%) para ARL
+    // Constantes especificadas en la actividad
+    public static final double PORCENTAJE_SALUD = 0.04;       // 4% Seguro Social
+    public static final double PORCENTAJE_PENSION = 0.04;     // 4% Pensión
+    public static final double BONO_ALIMENTACION = 1000000.0; // $1.000.000 fijo para permanentes
 
-    //Calcula la deducción por Salud (Seguro Social).
+    // Tasa estándar en Colombia para Riesgo I (Administrativos/Oficina)
+    public static final double PORCENTAJE_ARL_RIESGO_1 = 0.00522; // 0.522%
+
     public static double calcularSalud(double salarioBruto) {
         return salarioBruto * PORCENTAJE_SALUD;
     }
 
-    //Calcula la deducción por Pensión.
     public static double calcularPension(double salarioBruto) {
         return salarioBruto * PORCENTAJE_PENSION;
     }
 
-
-    //Calcula la deducción de ARL.
+    /**
+     * Calcula la ARL permitiendo manejar el porcentaje base (Riesgo 1).
+     */
     public static double calcularArl(double salarioBruto) {
-        return salarioBruto * PORCENTAJE_ARL;
+        return salarioBruto * PORCENTAJE_ARL_RIESGO_1;
     }
 
     /**
-     * Procesa el salario neto final restando deducciones y sumando beneficios,
-     * aplicando la validación obligatoria de no salarios negativos.
-     * @param salarioBruto Salario calculado por cada tipo de empleado.
-     * @param otrosBeneficios Suma de bonos (alimentación, comisiones, etc.).
-     * @param otrasDeducciones Suma de otros descuentos (ej. Fondo de ahorro).
-     * @return Salario neto final.
-     * @throws ArithmeticException Si el salario neto resultante es menor a 0.
+     * Valida y calcula el salario neto final.
+     * Alerta si el neto es negativo lanzando una excepción matemática.
      */
     public static double calcularSalarioNeto(double salarioBruto, double otrosBeneficios, double otrasDeducciones) {
-        double deduccionesObligatorias = calcularSalud(salarioBruto) + calcularPension(salarioBruto) + calcularArl(salarioBruto);
+        double deduccionesObligatorias = calcularSalud(salarioBruto) +
+                calcularPension(salarioBruto) +
+                calcularArl(salarioBruto);
 
         double salarioNeto = (salarioBruto + otrosBeneficios) - (deduccionesObligatorias + otrasDeducciones);
 
         // Regla de negocio: Ningún empleado puede tener un salario neto negativo
         if (salarioNeto < 0) {
-            throw new ArithmeticException("Error Crítico: El salario neto no puede ser negativo.");
+            throw new ArithmeticException("Error de Nómina: El salario neto no puede ser negativo.");
         }
 
         return salarioNeto;

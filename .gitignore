@@ -1,2 +1,5 @@
 # Directorio de configuración de IntelliJ IDEA
 .idea/
+
+# Ocultar la carpeta de compilación de Ant / IntelliJ
+build/

@@ -9,4 +9,5 @@ public interface Beneficiable {
      * Calcula la sumatoria de beneficios extra que apliquen al empleado.
      */
     double calcularBeneficios();
+    boolean tieneBeneficios();
 }

@@ -15,4 +15,5 @@ public class Constantes {
     public static final double BONO_COMISION = 0.03;
 
     public static final double RECARGO_HORA = 1.5;
+    public static final double HORAS_ORDINARIAS = 40;
 }

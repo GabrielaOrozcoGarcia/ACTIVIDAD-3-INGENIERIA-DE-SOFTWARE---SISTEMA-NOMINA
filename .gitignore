@@ -3,3 +3,5 @@
 
 # Ocultar la carpeta de compilación de Ant / IntelliJ
 build/
+
+.out
